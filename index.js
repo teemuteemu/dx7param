@@ -1,3 +1,5 @@
+const midi = require('midi');
+
 const params = require('./param.js');
 
 const STATUS_START_SYSEX = 0xF0;
@@ -15,7 +17,30 @@ const FOOTER = [
   STATUS_END_SYSEX
 ];
 
-const param = params.toDxValue('ALGORITHM', 2);
-const buffer = new Buffer(HEADER.concat(param).concat(FOOTER));
+const MIDI_DEV_ID = 1; // TODO bad magic #
 
-console.log(buffer.toString('hex'));
+function createMessage (parameter, value) {
+  const param = params.toDxValue(parameter, value);
+  const payload = HEADER
+    .concat(param)
+    .concat(FOOTER);
+  /*
+  const buffer = new Buffer(HEADER.concat(param).concat(FOOTER));
+
+  return buffer.toString('hex');
+  */
+
+  return payload;
+}
+
+const output = new midi.output();
+
+const message = createMessage('ALGORITHM', 2);
+
+console.log(`Using "${output.getPortName(MIDI_DEV_ID)}"`);
+output.openPort(MIDI_DEV_ID);
+
+output.sendMessage(message);
+// console.log(message);
+
+output.closePort();
