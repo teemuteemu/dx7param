@@ -31,11 +31,19 @@ const operators = Array(6)
   .map((v, i) => i + 1);
 
 const OP_PARAMS = operators
-  .map((op) => {
+  .map((_op) => {
+    const op = (operators.length - _op) + 1;
     const params = Object.keys(OP_PARAMS_TMPL)
       .reduce((prev, curr) => {
         const key = `OP_${op}_${curr}`;
         const params = OP_PARAMS_TMPL[curr].slice();
+
+        if (_op >= 2) {
+          const oo = _op - 1;
+          const add = oo * 20;
+          params[1] = params[1] + add + oo;
+        }
+
         prev[key] = params;
         return prev;
       }, {});

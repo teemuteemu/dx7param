@@ -35,7 +35,8 @@ function createMessage (parameter, value) {
 
 const output = new midi.output();
 
-const message = createMessage('ALGORITHM', 2);
+const message = createMessage('OP_1_OSC_FREQ_COARSE', 3);
+console.log(message);
 
 console.log(`Using "${output.getPortName(MIDI_DEV_ID)}"`);
 output.openPort(MIDI_DEV_ID);
