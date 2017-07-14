@@ -38,7 +38,6 @@ function initMidi () {
 function sendParam (output, param, value) {
   try {
     const message = createMessage(param, value);
-    console.log(message);
 
     output.sendMessage(message);
   } catch (e) {

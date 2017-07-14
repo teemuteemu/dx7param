@@ -10,7 +10,14 @@ function initWebSockerServer () {
   wss.on('connection', function connection(ws) {
     ws.on('message', function incoming(message) {
       console.log('received: %s', message);
-      // midi.sendParam(output, 'OP_1_OSC_FREQ_COARSE', 6);
+
+      try {
+        const data = JSON.parse(message)
+        const { param, value } = data;
+        midi.sendParam(output, param, value);
+      } catch(e) {
+        console.log('Bad parameter cmd');
+      }
     });
 
     const welcomeMessage = JSON.stringify({
