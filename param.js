@@ -126,14 +126,23 @@ function randomVoice () {
     .map(par => {
       const param = voiceParams[par].slice();
       const value = Math.floor(Math.random() * param[2][1]);
+
       return value;
     });
+}
+
+function calculateChecksum (values) {
+  const sum = values.reduce((p, c) => p + c);
+  const checksum = (~sum + 1) & 0x7F;
+
+  return checksum;
 }
 
 module.exports = {
   PARAMS,
   toDxValue,
-  randomVoice
+  randomVoice,
+  calculateChecksum
 };
 
 /**

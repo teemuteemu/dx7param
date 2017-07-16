@@ -40,9 +40,10 @@ function createParamChangeMessage (parameter, value) {
 
 function createRandomVoiceMessage (voice) {
   const values = params.randomVoice();
-  console.log(values.length);
+  const checkSum = params.calculateChecksum(values);
   const payload = VOICE_CHANGE_HEADER
     .concat(values)
+    .concat(checkSum)
     .concat(FOOTER);
 
   return payload;
