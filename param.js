@@ -52,7 +52,7 @@ const OP_PARAMS = operators
   })
   .reduce((prev, curr) => Object.assign(prev, curr), {});
 
-const GLOBAL_PARAMS = {
+const VOICE_PARAMS = {
   PITCH_EG_RATE_1:  [ 0, 126, [0, 99] ],
   PITCH_EG_RATE_2:  [ 0, 127, [0, 99] ],
   PITCH_EG_RATE_3:  [ 1, 0, [0, 99] ],
@@ -85,7 +85,24 @@ const GLOBAL_PARAMS = {
   OPERATOR_ON_OFF:    [ 1, 27, [0, 99] ]
 };
 
-const PARAMS = Object.assign({}, OP_PARAMS, GLOBAL_PARAMS);
+const FUNCTION_PARAMS = {
+  MONO_POLY_MODE: [ 2, 64, [0, 1] ], // O=POLY
+  PITCH_BEND_RANGE: [ 2, 65, [0, 12] ],
+  PITCH_BEND_STEP: [ 2, 66, [0, 12] ],
+  PORTAMENTO_MODE: [ 2, 67, [0, 1] ],
+  PORTAMENTO_GLISS: [ 2, 68, [0, 1] ],
+  PORTAMENTO_TIME: [ 2, 69, [0, 99] ],
+  MOD_WHEEL_RANGE: [ 2, 70, [0, 99] ],
+  MOD_WHEEL_ASSIGN: [ 2, 71, [0, 7] ], 
+  FOOT_CONTROL_RANGE: [ 2, 72, [0, 99] ],
+  FOOT_CONTROL_ASSIGN: [ 2, 73, [0, 7] ],
+  BREATH_CONT_RANGE: [ 2, 74, [0, 99] ], 
+  BREATH_CONT_ASSIGN: [ 2, 75, [0, 7] ], 
+  AFTERTOUCH_RANGE: [ 2, 76, [0, 99] ],  
+  AFTERTOUCH_ASSIGN: [ 2, 77, [0, 7] ]
+};
+
+const PARAMS = Object.assign({}, OP_PARAMS, VOICE_PARAMS, FUNCTION_PARAMS);
 
 function toDxValue (paramKey, value) {
   const paramArray = PARAMS[paramKey].slice();
