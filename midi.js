@@ -1,5 +1,6 @@
 const midi = require('midi');
 
+const config = require('./config.js');
 const params = require('./param.js');
 
 const STATUS_START_SYSEX = 0xF0;
@@ -28,11 +29,8 @@ const FOOTER = [
   STATUS_END_SYSEX
 ];
 
-const MIDI_DEV_ID = 1; // TODO bad magic #
-
 function createParamChangeMessage (parameter, value) {
   const param = params.toDxValue(parameter, value);
-  console.log(param);
   const payload = PARAM_CHANGE_HEADER
     .concat(param)
     .concat(FOOTER);
@@ -40,11 +38,29 @@ function createParamChangeMessage (parameter, value) {
   return payload;
 }
 
+function createRandomVoiceMessage (voice) {
+  const values = params.randomVoice();
+  console.log(values.length);
+  const payload = VOICE_CHANGE_HEADER
+    .concat(values)
+    .concat(FOOTER);
+
+  return payload;
+}
+
+createRandomVoiceMessage();
+
 function initMidi () {
   const output = new midi.output();
+  const allOuputs = Array(output.getPortCount())
+    .fill(0)
+    .map((v, i) => output.getPortName(i));
 
-  console.log(`Using "${output.getPortName(MIDI_DEV_ID)}"`);
-  output.openPort(MIDI_DEV_ID);
+  console.log('Available Midi devices:');
+  allOuputs.forEach((v, i) => console.log(`- ${i}: ${v}`));
+
+  console.log(`Using "${output.getPortName(config.MIDI_DEV_ID)}"`);
+  output.openPort(config.MIDI_DEV_ID);
 
   return output;
 }

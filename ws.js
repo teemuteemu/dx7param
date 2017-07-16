@@ -1,11 +1,10 @@
 const WebSocket = require('ws');
 
+const config = require('./config.js');
 const params = require('./param.js');
-const midi = require('./midi.js');
 
-function initWebSockerServer () {
-  const wss = new WebSocket.Server({ port: 8080 });
-  const output = midi.initMidi();
+function initWebSockerServer (output) {
+  const wss = new WebSocket.Server({ port: config.WS_PORT });
 
   wss.on('connection', function connection(ws) {
     ws.on('message', function incoming(message) {
@@ -27,7 +26,7 @@ function initWebSockerServer () {
     ws.send(welcomeMessage);
   });
 
-  console.log('WS listening @ :8080...');
+  console.log(`WS listening @ :${config.WS_PORT}...`);
 }
 
 module.exports = initWebSockerServer;
