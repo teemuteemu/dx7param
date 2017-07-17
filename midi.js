@@ -39,17 +39,14 @@ function createParamChangeMessage (parameter, value) {
 }
 
 function createRandomVoiceMessage (voice) {
-  const values = params.randomVoice();
-  const checkSum = params.calculateChecksum(values);
+  const checkSum = params.calculateChecksum(voice);
   const payload = VOICE_CHANGE_HEADER
-    .concat(values)
+    .concat(voice)
     .concat(checkSum)
     .concat(FOOTER);
 
   return payload;
 }
-
-createRandomVoiceMessage();
 
 function initMidi () {
   const output = new midi.output();
@@ -66,19 +63,34 @@ function initMidi () {
   return output;
 }
 
+function midiSend (output, message) {
+  console.log(`Sending parameter: "${message}"`);
+  output.sendMessage(message);
+}
+
 function sendParam (output, param, value) {
   try {
     const message = createParamChangeMessage(param, value);
-    // console.log(`Sending parameter: "${message}"`);
-    output.sendMessage(message);
+    midiSend(output, message);
   } catch (e) {
     console.log('Bad param');
   }
 }
 
+function sendVoice (output) {
+  try {
+    const voice = params.randomVoice();
+    const message = createRandomVoiceMessage(voice);
+    midiSend(output, message);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 module.exports = {
   initMidi,
-  sendParam
+  sendParam,
+  sendVoice
 };
 
 // output.closePort();

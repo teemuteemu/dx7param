@@ -3,9 +3,7 @@ const initWebSockerServer = require('./ws.js');
 
 function init () {
   try {
-    const output = midi.initMidi();
-
-    initWebSockerServer(output);
+    initWebSockerServer(midi);
   } catch (e) {
     console.log(e);
   }
